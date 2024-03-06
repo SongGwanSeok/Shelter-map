@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>geocodingCity</title>
+</head>
+<body>
+
+<form name="form" id="form" method="post" action="/geocodingCity">
+    <div class="row" >
+        <div class="col">
+            <select class="form-select" name="cityName" style="width: 150px;">
+                <option selected>시군구 선택</option>
+                <th:block th:each="city : ${cityList}">
+                    <option th:value="${city.cityName}" th:text="${city.cityName}">
+                    </option>
+                </th:block>
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">찾기</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

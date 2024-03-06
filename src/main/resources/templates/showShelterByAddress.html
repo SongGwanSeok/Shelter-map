@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>대피소 전체</title>
+  <script th:inline="javascript" th:src="@{'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=' + ${mapKey}}"></script>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var shelterList = /*[[${shelterList}]]*/ 'default value';
+    /*]]>*/
+  </script>
+</head>
+<body layout:fragment="content">
+<div class="container" style="padding: 5rem 0">
+  <div id="map" style="width:100%;height:400px;"></div>
+
+  <form name="form" id="form" method="get" action="/searchCity">
+    <div class="row" style="padding-top: 100px">
+      <div class="col">
+        <select class="form-select" aria-label="Default select example" name="cityName">
+          <option selected>시군구 선택</option>
+          <th:block th:each="city : ${cityList}">
+            <option th:value="${city.cityName}" th:text="${city.cityName}">
+            </option>
+          </th:block>
+        </select>
+      </div>
+      <div class="col">
+        <button type="submit">찾기</button>
+      </div>
+    </div>
+  </form>
+  <div id="list"></div><!-- 조회 결과 -->
+
+</div>
+
+
+
+
+<script th:inline="javascript">
+
+  var map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(37.5112, 127.0981), // 잠실 롯데월드를 중심으로 하는 지도
+    zoom: 15
+  });
+
+
+  var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(33.4748, 124.8496),
+    map: map
+  });
+
+  shelterList.forEach(function (shelter){
+    shelter.address.address_new
+    var marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(parseFloat(shelter.coord.lon.toFixed(4)), parseFloat(shelter.coord.lat.toFixed(4))),
+      map: map
+    });
+  })
+
+</script>
+</body>
+</html>

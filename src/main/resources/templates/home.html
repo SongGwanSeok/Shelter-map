@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>대피소</title>
+    <script th:inline="javascript" th:src="@{'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=' + ${mapKey}}"></script>
+</head>
+<body layout:fragment="content">
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-white">
+                    <h1 class="mb-5">대피소 찾기</h1>
+                    <form class="form-subscribe" id="contactForm" action="/search" method="post">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control form-control-lg" id="address" name="address" type="address" placeholder="주소를 입력하세요" data-sb-validations="required" />
+                            </div>
+                            <div class="col-auto"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">찾기</button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>

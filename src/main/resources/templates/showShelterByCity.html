@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>대피소 전체</title>
+  <script th:inline="javascript" th:src="@{'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=' + ${mapKey}}"></script>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var shelterList = /*[[${shelterList}]]*/ 'default value';
+    var centerLatLon = /*[[${centerLatLon}]]*/ 'default value';
+    /*]]>*/
+  </script>
+</head>
+<body layout:fragment="content">
+<div class="container" style="padding: 3rem 0">
+  <div id="map" style="width:100%;height:600px;"></div>
+</div>
+
+
+
+
+<script th:inline="javascript">
+  let markers = new Array(); // 마커 정보를 담는 배열
+  let infoWindows = new Array(); // 정보창을 담는 배열
+
+  //map 위지 고정
+  var map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(centerLatLon[1], centerLatLon[0]),
+    zoom: 14
+  });
+
+  //대피소 마커 뿌려주기
+  shelterList.forEach(function (shelter){
+    var marker = new naver.maps.Marker({
+      // position: new naver.maps.LatLng(37.5222, 127.0981),
+      position: new naver.maps.LatLng(shelter.coord.lon, shelter.coord.lat),
+      map: map
+    });
+
+    /* 정보창 */
+    var infoWindow = new naver.maps.InfoWindow({
+      content: '<div style="text-align:center;padding:10px;">' +
+              '<b>'+shelter.address.name+'</b>' +
+              '<br>' +shelter.statusName +
+              '<br>' + shelter.address.addressNew +
+              '</div>'
+    }); // 클릭했을 때 띄워줄 정보 입력
+
+    infoWindows.push(infoWindow); // 생성한 정보창을 담는다.
+    markers.push(marker); // 생성한 마커를 담는다.
+  })
+
+
+
+
+  function getClickHandler(seq) {
+
+    return function(e) {  // 마커를 클릭하는 부분
+      var marker = markers[seq], // 클릭한 마커의 시퀀스로 찾는다.
+              infoWindow = infoWindows[seq]; // 클릭한 마커의 시퀀스로 찾는다
+      infoWindow.open(map, marker); // 표출
+
+
+    }
+  }
+
+  for (var i=0, ii=markers.length; i<ii; i++) {
+    naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i)); // 클릭한 마커 핸들러
+  }
+
+</script>
+</body>
+</html>

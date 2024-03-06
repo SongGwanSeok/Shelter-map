@@ -1,0 +1,30 @@
+<!--resources/templates/fragments/header.html-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="header">
+    <!-- Navigation-->
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">대피소</a>
+            <form name="form" id="form" method="get" action="/searchCity">
+                <div class="row" >
+                    <div class="col">
+                        <select class="form-select" name="cityName" style="width: 150px;">
+                            <option selected>시군구 선택</option>
+                            <th:block th:each="city : ${cityList}">
+                                <option th:value="${city.cityName}" th:text="${city.cityName}">
+                                </option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">찾기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+</div>
+</html>
